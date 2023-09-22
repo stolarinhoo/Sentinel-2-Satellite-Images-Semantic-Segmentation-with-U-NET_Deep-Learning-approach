@@ -24,7 +24,7 @@ Sentinel-2 is an Earth observation satellite providing high-resolution images. T
 S2B_MSIL2A_20180607T095029_N0208_R079_T33UYS_20180607T130225
 ```
 
-The photo covers the south-western part of Poland, mainly the Lower Silesian Voivodship. It includes the central and eastern part of Wrocław and the western part of Brzeg.
+The image covers the south-western part of Poland, partly covering the Lower Silesian and Opole Voivodships. It includes the central and eastern part of Wrocław and the western part of Brzeg.
 
 ![img1](/docs/img1.jpg)
 
