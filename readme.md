@@ -57,7 +57,7 @@ A sample of learning samples can be found in the data directory.
 Training began with 1,728 teaching samples and 172 validation samples. The number of epochs was determined to be 60.
 The result achieved was a precision of around 75% of correctly predicted classes.
 
-Here is a table showing the results of the last five epochs:
+Table with results of the last five epochs:
 | Epoch   | Loss    | Accuracy | Val_Loss | Val_Accuracy | LR        |
 |---------|---------|----------|----------|--------------|-----------|
 | 56/60   | 0.1762  | 0.7461   | 0.2021   | 0.7590       | 1.0000e-04|
