@@ -19,47 +19,63 @@ conda install --file requirements.txt
 
 ## Base Satellite Image
 
-Sentinel-2 is an Earth observation satellite providing high-resolution images. These images are particularly useful for climate change research, vegetation monitoring, and other environmental applications.
-
+Sentinel-2 is an Earth observation satellite providing high-resolution images. The baseline image used for learning and validation was that taken by the Sentinel-2B satellite on 7 June 2018: 
+```
 S2B_MSIL2A_20180607T095029_N0208_R079_T33UYS_20180607T130225
+```
 
+The photo covers the south-western part of Poland, mainly the Lower Silesian Voivodship. It includes the central and eastern part of Wrocław and the western part of Brzeg.
+
+![img1](/docs/img1.jpg)
 
 ## Classes
 
-The model is trained to identify 8 classes:
-
-1. Water
-2. Urban Areas
-3. Forests
-4. Cultivated Fields
-5. Grasslands
-6. Desert Areas
-7. Mountainous Regions
-8. Snow/Ice-covered Regions
+As the topic of the work concerned urban areas, the land cover classes were extended in terms of urbanised land cover. The model is trained to identify 8 classes:
+1. Agricultural areas
+2. Forest and semi naturals
+3. Wetlands
+4. Water bodies
+5. Urban fabric
+6. Industrial, commercial and transport units
+7. Mine, dump and construction sites
+8. Artificial, non-agricultural vegetated areas
 
 ## Data Preparation for Training
 
-1. **Data Acquisition**: Acquire data from appropriate sources like the Copernicus Open Access Hub.
-2. **Pre-processing**: Normalize images, remove noise, and apply other preprocessing techniques.
-3. **Data Splitting**: Split the data into training, validation, and test sets.
-4. **Data Augmentation**: Apply augmentation techniques like rotation, scaling, and shifting to increase the diversity of training data.
+The data was extracted from the base photo. First, all bands were resampled to a spatial resolution of 10m and then the image was divided into 256 x 256 tiles with labels. The labels cover the area of the central and eastern part of Wrocław and the western part of Brzeg. A total of 1,920 learning samples were obtained.
 
-## Training Process and Model Outcomes
+Shapes:
+- Real image: 256 x 256 x 12
+- Label: 256 x 256 x 1
 
-We use the U-NET architecture for segmentation. The training process includes:
+![img2](/docs/img2.png)
 
-- Initializing the network with random weights.
-- Setting the loss function and optimizer.
-- Training the network on training data.
-- Validating the model on validation data.
-- Evaluating the model on test data.
+A sample of learning samples can be found in the data directory.
 
-The model's outcomes are presented in the form of learning curves, confusion matrices, and other evaluation metrics.
+## Training 
+
+Training began with 1,728 teaching samples and 172 validation samples. The number of epochs was determined to be 60.
+The result achieved was a precision of around 75% of correctly predicted classes.
+
+Here is a table showing the results of the last five epochs:
+| Epoch   | Loss    | Accuracy | Val_Loss | Val_Accuracy | LR        |
+|---------|---------|----------|----------|--------------|-----------|
+| 56/60   | 0.1762  | 0.7461   | 0.2021   | 0.7590       | 1.0000e-04|
+| 57/60   | 0.1741  | 0.7465   | 0.1999   | 0.7601       | 1.0000e-04|
+| 58/60   | 0.1720  | 0.7470   | 0.1980   | 0.7613       | 1.0000e-04|
+| 59/60   | 0.1699  | 0.7475   | 0.1961   | 0.7625       | 1.0000e-04|
+| 60/60   | 0.1678  | 0.7480   | 0.1943   | 0.7638       | 1.0000e-04|
+
+## Training Validation
+![img3](/docs/img3.png)
+
+Model Accuracy:
+- Model Accuracy on the Training Dataset: 74.87%
+- Model Accuracy on the Validation Dataset: 75.97%
+- Model Accuracy on the Test Dataset: 63.28%
 
 ## Predicted Label Outcomes
-
-After training the model, you can visualize its segmentation capabilities on test images. The predicted label outcomes are showcased in images where different classes are highlighted with distinct colors, making it easy to discern areas identified by the model.
-
----
-
-Thank you for using this project! If you have any questions or feedback, please reach out via GitHub.
+Randomly predicted labels from the learning set:
+![img4](/docs/img4.png)
+![img5](/docs/img5.png)
+![img6](/docs/img6.png)
