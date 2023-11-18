@@ -1,13 +1,12 @@
 # Sentinel-2 Satellite Images Semantic Segmentation with U-NET
 
-Welcome to this repository, which encompasses the entirety of the codebase used for training and evaluating a U-NET model specialized in the semantic segmentation of Sentinel-2 satellite imagery. The repository was created on the basis of writing my master's thesis, the aim of which was to study land cover changes in and around urban area. 
-
+Welcome to this repository, which encompasses the entirety of the codebase used for training and evaluating a U-NET model specialized in the semantic segmentation of Sentinel-2 satellite imagery. The repository was created in conjunction with my master's thesis, which aimed to study land cover changes in and around urban areas using this model.
 ## Environment and Library Installation (conda)
 
 To run this project, it's recommended to set up a dedicated conda environment. You can do so with the following commands:
 
 ```bash
-conda create -n sentinel2_unet python=3.10
+conda create -n sentinel2_unet python=3.9.16
 conda activate sentinel2_unet
 ```
 
@@ -31,14 +30,17 @@ The image covers the south-western part of Poland, partly covering the Lower Sil
 ## Classes
 
 As the topic of the work concerned urban areas, the land cover classes were extended in terms of urbanised land cover. The model is trained to identify 8 classes:
-1. Agricultural areas
-2. Forest and semi naturals
-3. Wetlands
-4. Water bodies
-5. Urban fabric
-6. Industrial, commercial and transport units
-7. Mine, dump and construction sites
-8. Artificial, non-agricultural vegetated areas
+| L.P. | Land Cover Class                             |
+| ---- | -------------------------------------------- |
+| 1    | Agricultural areas                           |
+| 2    | Forest and semi naturals                     |
+| 3    | Wetlands                                     |
+| 4    | Water bodies                                 |
+| 5    | Urban fabric                                 |
+| 6    | Industrial, commercial and transport units   |
+| 7    | Mine, dump and construction sites            |
+| 8    | Artificial, non-agricultural vegetated areas |
+
 
 ## Data Preparation for Training
 
