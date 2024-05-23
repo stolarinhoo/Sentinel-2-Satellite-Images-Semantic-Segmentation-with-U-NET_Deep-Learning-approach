@@ -1,6 +1,10 @@
-# Sentinel-2 Satellite Images Semantic Segmentation with U-NET
+# Sentinel-2 Satellite Images Semantic Segmentation with U-NET: A Deep Learning Approach
 
-Welcome to this repository, which encompasses the entirety of the codebase used for training and evaluating a U-NET model specialized in the semantic segmentation of Sentinel-2 satellite imagery. The repository was created in conjunction with my master's thesis, which aimed to study land cover changes in and around urban areas using this model.
+Welcome to this repository, which houses the complete codebase used for training and evaluating a U-NET model that specializes in the semantic segmentation of Sentinel-2 satellite imagery. This project is a deep learning endeavor, leveraging the power of neural networks to understand and classify satellite imagery. The repository was created in conjunction with my master's thesis, which focused on studying land cover changes in and around urban areas using this model. 
+
+The deep learning model was trained with 1,728 training samples and validated with 172 samples. The model achieved a precision of approximately 75% for correctly predicted classes, demonstrating its effectiveness in classifying land cover from satellite images.
+
+
 ## Environment and Library Installation (conda)
 
 To run this project, it's recommended to set up a dedicated conda environment. You can do so with the following commands:
@@ -10,7 +14,7 @@ conda create -n sentinel2_unet python=3.9.16
 conda activate sentinel2_unet
 ```
 
-Once the environment is activated, you can install the necessary libraries with:
+After activating the environment, you can install the necessary libraries with:
 
 ```bash
 conda install --file requirements.txt
@@ -18,18 +22,18 @@ conda install --file requirements.txt
 
 ## Base Satellite Image
 
-Sentinel-2 is an Earth observation satellite providing high-resolution images. The baseline image used for learning and validation was that taken by the Sentinel-2B satellite on 7 June 2018: 
+Sentinel-2 is an Earth observation satellite providing high-resolution images. The base image used for learning and validation was captured by the Sentinel-2B satellite on 7 June 2018: 
 ```
 S2B_MSIL2A_20180607T095029_N0208_R079_T33UYS_20180607T130225
 ```
 
-The image covers the south-western part of Poland, partly covering the Lower Silesian and Opole Voivodships. It includes the central and eastern part of Wrocław and the western part of Brzeg.
+This image covers the southwestern part of Poland, including parts of the Lower Silesian and Opole Voivodships. It encompasses the central and eastern parts of Wrocław and the western part of Brzeg.
 
 ![img1](/docs/img1.jpg)
 
 ## Classes
 
-As the topic of the work concerned urban areas, the land cover classes were extended in terms of urbanised land cover. The model is trained to identify 8 classes:
+The focus of the work was on urban areas, so the land cover classes were expanded to include more urbanized land cover. The model is trained to identify 8 classes:
 | L.P. | Land Cover Class                             |
 | ---- | -------------------------------------------- |
 | 1    | Agricultural areas                           |
@@ -44,7 +48,7 @@ As the topic of the work concerned urban areas, the land cover classes were exte
 
 ## Data Preparation for Training
 
-The data was extracted from the base photo. First, all bands were resampled to a spatial resolution of 10m and then the image was divided into 256 x 256 tiles with labels. The labels cover the area of the central and eastern part of Wrocław and the western part of Brzeg. A total of 1,920 learning samples were obtained.
+The data was extracted from the base image. First, all bands were resampled to a spatial resolution of 10m and then the image was divided into 256 x 256 tiles with labels. The labels cover the area of the central and eastern part of Wrocław and the western part of Brzeg. A total of 1,920 learning samples were obtained.
 
 Shapes:
 - Real image: 256 x 256 x 12
@@ -56,10 +60,9 @@ A sample of learning samples can be found in the data directory.
 
 ## Training 
 
-Training began with 1,728 teaching samples and 172 validation samples. The number of epochs was determined to be 60.
-The result achieved was a precision of around 75% of correctly predicted classes.
+Training was conducted with 1,728 training samples and 172 validation samples. The number of epochs was set to 60. The model achieved a precision of approximately 75% for correctly predicted classes.
 
-Table with results of the last five epochs:
+Here are the results of the last five epochs:
 | Epoch   | Loss    | Accuracy | Val_Loss | Val_Accuracy | LR        |
 |---------|---------|----------|----------|--------------|-----------|
 | 56/60   | 0.1762  | 0.7461   | 0.2021   | 0.7590       | 1.0000e-04|
@@ -77,7 +80,6 @@ Model Accuracy:
 - Model Accuracy on the Test Dataset: 63.28%
 
 ## Predicted Label Outcomes
-Randomly predicted labels from the learning set:
+Randomly predicted labels from the training set:
 ![img4](/docs/img4.png)
 ![img5](/docs/img5.png)
-![img6](/docs/img6.png)
