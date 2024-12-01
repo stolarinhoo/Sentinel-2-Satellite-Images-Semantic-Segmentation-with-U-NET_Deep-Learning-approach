@@ -18,9 +18,9 @@ from utils import get_file_paths_for_images_and_labels, get_number_of_images_and
 matplotlib.use('Qt5Agg')
 
 
-def plot_images_and_labels(number_images_to_plot: int, save: bool = False) -> None:
-    image_paths, label_paths = get_file_paths_for_images_and_labels()
-    number_of_samples, _ = get_number_of_images_and_labels()
+def plot_images_and_labels(number_images_to_plot, save, images_dir, labels_dir):
+    image_paths, label_paths = get_file_paths_for_images_and_labels(images_dir, labels_dir)
+    number_of_samples, _ = get_number_of_images_and_labels(images_dir, labels_dir)
 
     for img in range(number_images_to_plot):
         random_number = random.randint(0, number_of_samples - 1)
@@ -32,8 +32,8 @@ def plot_images_and_labels(number_images_to_plot: int, save: bool = False) -> No
         fig, arr = plt.subplots(1, 3, figsize=(20, 8))
 
         with rasterio.open(image_path) as image, rasterio.open(label_path) as label:
-            __print_image_metadata(image) if img == 0 else None
-            image_rgb = __s2_image_to_rgb(image)
+            _print_image_metadata(image) if img == 0 else None
+            image_rgb = _s2_image_to_rgb(image)
             label = label.read(1)
 
             arr[0].imshow(X=image_rgb)
@@ -41,19 +41,19 @@ def plot_images_and_labels(number_images_to_plot: int, save: bool = False) -> No
 
             im1 = arr[1].imshow(label)
             arr[1].set_title('Label')
-            patches1 = __get_patches(im1, label)
+            patches1 = _get_patches(im1, label)
             arr[1].legend(handles=patches1, bbox_to_anchor=(1.0, -0.06), loc=0, borderaxespad=0.)
 
-            im2 = arr[2].imshow(label, cmap='Accent')  # another fine cmap 'Paired'
+            im2 = arr[2].imshow(label, cmap='Accent')
             arr[2].set_title('Label Overlay')
-            patches2 = __get_patches(im2, label)
+            patches2 = _get_patches(im2, label)
             arr[2].legend(handles=patches2, bbox_to_anchor=(1.0, -0.06), loc=0, borderaxespad=0.)
 
-            __save_plot(plt, f"{random_number}th_image{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}") if save else None
+            _save_plot(plt, f"{random_number}th_image{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}") if save else None
     plt.show()
 
 
-def plot_training_results(history: History, save: bool = False):
+def plot_training_results(history, save = False):
     acc = [0.] + history.history['accuracy']
     val_acc = [0.] + history.history['val_accuracy']
 
@@ -77,12 +77,11 @@ def plot_training_results(history: History, save: bool = False):
     plt.ylim([0, 1.0])
     plt.title('Training and Validation Loss')
     plt.xlabel('epoch')
-    __save_plot(plt, f"unet_training_results_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}") if save else None
+    _save_plot(plt, f"unet_training_results_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}") if save else None
     plt.show()
 
 
-def plot_model_predictions(model: Model, number_of_batches: int, number_of_images: int,
-                           batch_size: int, train_size: int, save: bool = False):
+def plot_model_predictions(model, number_of_batches, number_of_images, batch_size, train_size, save = False):
     train_dataset, test_dataset, val_dataset = prepare_datasets(batch_size, train_size)
 
     for image, label in val_dataset.take(number_of_batches):
@@ -98,54 +97,54 @@ def plot_model_predictions(model: Model, number_of_batches: int, number_of_image
 
             im1 = arr[1].imshow(label[i])
             arr[1].set_title('Label')
-            ptch1 = __get_patches(im1, label[i])
+            ptch1 = _get_patches(im1, label[i])
             arr[1].legend(handles=ptch1, bbox_to_anchor=(1.0, -0.06), loc=0, borderaxespad=0.)
 
             im2 = arr[2].imshow(predicted_classes[i])
             arr[2].set_title('Predicted label')
-            ptch2 = __get_patches(im2, predicted_classes[i])
+            ptch2 = _get_patches(im2, predicted_classes[i])
             arr[2].legend(handles=ptch2, bbox_to_anchor=(1.0, -0.06), loc=0, borderaxespad=0.)
 
-            __save_plot(plt, f"{model}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}") if save else None
+            _save_plot(plt, f"{model}_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}") if save else None
             plt.show()
 
 
-def __s2_image_to_rgb(image: DatasetReader):
+def _s2_image_to_rgb(image):
     result_array = np.array([image.read(4), image.read(3), image.read(2)], dtype=float)
     result_array = np.transpose(result_array, (1, 2, 0))
     result_array = (result_array / 10000) + 0.15  # 0.15 added to brighten up the image
     return result_array
 
 
-def __print_image_metadata(image: DatasetReader):
+def _print_image_metadata(image):
     print(f"Shape: width x height x depth")
     print(f"\t\t{image.width} x {image.height} x {image.count}")
     print(f"CRS: {image.crs}")
 
 
-def __get_patches(im: AxesImage, image: np.ndarray):
-    unique_values = __get_unique_values(image)
-    cmap_colors = __get_cmap_colors(im, image)
-    cmap = __get_cmap(unique_values, cmap_colors)
+def _get_patches(im, image):
+    unique_values = _get_unique_values(image)
+    cmap_colors = _get_cmap_colors(im, image)
+    cmap = _get_cmap(unique_values, cmap_colors)
     classes = LAND_COVER_CLASSES
     return [mpatches.Patch(color=cmap[i], label=classes[i]) for i in cmap]
 
 
-def __get_unique_values(image: np.ndarray) -> np.ndarray:
+def _get_unique_values(image):
     return np.unique(image)
 
 
-def __get_cmap_colors(im: AxesImage, image: np.ndarray):
-    return im.cmap(im.norm(__get_unique_values(image)))
+def _get_cmap_colors(im, image):
+    return im.cmap(im.norm(_get_unique_values(image)))
 
 
-def __get_cmap(values: np.ndarray, colors) -> dict:
+def _get_cmap(values, colors):
     result = None
     if len(values) == len(colors):
         result = {values[i]: colors[i] for i in range(len(values))}
     return result
 
 
-def __save_plot(_plt: plt, title: str):
+def _save_plot(_plt, title):
     image_format = "png"
     _plt.savefig(fname=f"{title}.{image_format}", format=image_format)

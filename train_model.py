@@ -7,16 +7,15 @@ from plotting import plot_training_results
 from unet import unet_model
 
 
-def train_model(input_shape: tuple[int, int, int], filters: int, n_classes: int, epochs: int, batch_size: int,
-                test_size: float, save_model: bool = True, print_model_summary: bool = False,
-                plot_training_summary: bool = True, save_training_summary: bool = False) -> str:
-    model = unet_model(input_shape, filters=filters, n_classes=n_classes, print_summary=print_model_summary)
+def train_model(input_shape, filters, n_classes, epochs, batch_size, train_size, save_model,
+                plot_training_summary, save_training_summary, images_dir, labels_dir):
+    model = unet_model(input_shape, filters=filters, n_classes=n_classes)
 
     model.compile(optimizer='adam', loss=__masked_sparse_categorical_crossentropy, metrics=['accuracy'])
     callback = EarlyStopping(monitor='val_accuracy', patience=20, restore_best_weights=True)
     reduce_lr = ReduceLROnPlateau(monitor='val_accuracy', factor=1e-1, patience=5, verbose=1, min_lr=2e-6)
 
-    train_dataset, val_dataset, test_dataset = prepare_datasets(batch_size, test_size)
+    train_dataset, val_dataset, test_dataset = prepare_datasets(batch_size, train_size, images_dir, labels_dir)
 
     history = model.fit(train_dataset,
                         validation_data=val_dataset,
@@ -27,7 +26,7 @@ def train_model(input_shape: tuple[int, int, int], filters: int, n_classes: int,
 
     plot_training_results(history, save_training_summary) if plot_training_summary else None
 
-    model_name = f"unet_model_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.keras"
+    model_name = f"unet_model_{datetime.now().strftime('%Y%m%d_%H%M%S')}.keras"
     model.save(model_name) if save_model else None
 
     return model_name
