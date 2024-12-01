@@ -1,6 +1,6 @@
 # Sentinel-2 Satellite Images Semantic Segmentation with U-NET: A Deep Learning Approach
 
-Welcome to this repository, which houses the complete codebase used for training and evaluating a U-NET model that specializes in the semantic segmentation of Sentinel-2 satellite imagery. This project is a deep learning endeavor, leveraging the power of neural networks to understand and classify satellite imagery. The repository was created in conjunction with my master's thesis, which focused on studying land cover changes in and around urban areas using this model. 
+Welcome to this repository, which contains the complete codebase for training and evaluating a U-NET model designed for semantic segmentation of Sentinel-2 satellite imagery. This project harnesses the power of deep learning to analyze and classify satellite images, with a particular focus on understanding land cover changes in and around urban areas. 
 
 The deep learning model was trained with 1,728 training samples and validated with 172 samples. The model achieved a precision of approximately 75% for correctly predicted classes, demonstrating its effectiveness in classifying land cover from satellite images.
 
