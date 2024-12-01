@@ -4,7 +4,7 @@ from keras.utils import custom_object_scope
 
 from data_preprocessing import prepare_datasets
 from plotting import plot_model_predictions
-from train_model import __masked_sparse_categorical_crossentropy
+from train_model import _masked_sparse_categorical_crossentropy
 
 
 def compute_model_accuracy(model_filepath, batch_size, train_size, images_dir, labels_dir):
@@ -27,6 +27,6 @@ def display_model_predictions(model_filepath, batch_size, test_size, number_of_b
 
 
 def _load_unet_model(model_filepath):
-    with custom_object_scope({'__masked_sparse_categorical_crossentropy': __masked_sparse_categorical_crossentropy}):
+    with custom_object_scope({'__masked_sparse_categorical_crossentropy': _masked_sparse_categorical_crossentropy}):
         model = load_model(model_filepath)
     return model

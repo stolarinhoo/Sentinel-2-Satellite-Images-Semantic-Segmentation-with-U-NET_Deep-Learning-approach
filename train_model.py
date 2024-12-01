@@ -11,7 +11,7 @@ def train_model(input_shape, filters, n_classes, epochs, batch_size, train_size,
                 plot_training_summary, save_training_summary, images_dir, labels_dir):
     model = unet_model(input_shape, filters=filters, n_classes=n_classes)
 
-    model.compile(optimizer='adam', loss=__masked_sparse_categorical_crossentropy, metrics=['accuracy'])
+    model.compile(optimizer='adam', loss=_masked_sparse_categorical_crossentropy, metrics=['accuracy'])
     callback = EarlyStopping(monitor='val_accuracy', patience=20, restore_best_weights=True)
     reduce_lr = ReduceLROnPlateau(monitor='val_accuracy', factor=1e-1, patience=5, verbose=1, min_lr=2e-6)
 
@@ -34,7 +34,7 @@ def train_model(input_shape, filters, n_classes, epochs, batch_size, train_size,
 
 # Masked sparse categorical cross-entropy loss function.
 # This function calculates the loss only for labeled pixels in the ground truth.
-def __masked_sparse_categorical_crossentropy(y_true, y_pred):
+def _masked_sparse_categorical_crossentropy(y_true, y_pred):
     mask = tf.math.greater(y_true, 0)
     mask_squeezed = tf.squeeze(mask, axis=-1)
 

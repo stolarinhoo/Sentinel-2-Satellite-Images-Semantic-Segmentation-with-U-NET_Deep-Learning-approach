@@ -1,5 +1,4 @@
 import argparse
-import constants as const
 from plotting import plot_images_and_labels
 from constants import *
 from train_model import train_model
@@ -65,8 +64,8 @@ def main():
     # Train the model
     model_name = train_model(
         input_shape=tuple(args.input_shape),
-        filters=const.FILTERS,
-        n_classes=const.N_CLASSES,
+        filters=FILTERS,
+        n_classes=N_CLASSES,
         epochs=args.epochs,
         batch_size=args.batch_size,
         train_size=args.train_size,
