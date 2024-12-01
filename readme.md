@@ -20,6 +20,21 @@ After activating the environment, you can install the necessary libraries with:
 conda install --file requirements.txt
 ```
 
+## Sample Usage
+```bash
+python main.py \
+    --images-dir ./data/images \
+    --labels-dir ./data/labels \
+    --train-size 0.8 \
+    --batch-size 32 \
+    --epochs 100 \
+    --save-model \
+    --plot-images \
+    --num-samples 5 \
+    --save-samples \
+    --save-training-summary
+```
+
 ## Base Satellite Image
 
 Sentinel-2 is an Earth observation satellite providing high-resolution images. The base image used for learning and validation was captured by the Sentinel-2B satellite on 7 June 2018: 
